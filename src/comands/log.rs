@@ -3,12 +3,13 @@ use serde::{Deserialize, Serialize};
 use std::process::Command;
 use std::{str, path};
 use std::fs;
+use std::io::Write;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct ArchivoInfo {
-    nombre: String,
-    fechacopia: String,
-    horacopia: String,
+    name: String,
+    copydate: String,
+    timecopy: String,
     originpath: String,
 }
 
@@ -32,19 +33,21 @@ pub fn log(path  : &str){
             let parts: Vec<&str> = line.split_whitespace().collect();
             if parts.len() >= 3 {
                 archivos_info.push(ArchivoInfo {
-                    nombre: parts[2].to_owned().to_string(),
-                    fechacopia:  parts[0].to_owned(),
-                    horacopia: parts[1].to_owned(),
+                    name: parts[2].to_owned().to_string(),
+                    copydate:  parts[0].to_owned(),
+                    timecopy: parts[1].to_owned(),
                     originpath: parts[3].to_owned(),
                 });
             }
         }
 
-        // Convertir archivos_info a JSON
-        let json_data = serde_json::to_string(&archivos_info).expect("Error al serializar a JSON");
+       
+        let json_data = serde_json::to_string(&archivos_info).expect("failed to convert in json");
 
-        // Imprimir o guardar el JSON
-        println!("{}", json_data);
+        let mut file = fs::File::create("log.json").expect("failed to create file");
+        file.write_all(json_data.as_bytes()).expect("filed to write");
+        
+
     } else {
         let stderr = str::from_utf8(&output.stderr).expect("Invalid UTF-8");
         eprintln!("{}", stderr);
