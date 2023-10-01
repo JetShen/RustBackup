@@ -21,7 +21,7 @@ fn main() {
 
     let paths = vec![origin_path.to_owned(), destination_path.to_owned()];
     comands::check::check_path(&paths);
-    comands::log::log(origin_path); 
+    comands::log::log(&paths); 
    
 
     

@@ -14,12 +14,12 @@ struct ArchivoInfo {
 }
 
 
-pub fn log(path  : &str){
+pub fn log(paths :  &Vec<String>){
     let output = Command::new("powershell")
         .arg("-Command")
         .arg(format!(
             "Get-ChildItem -File -Recurse -Path {} | Select-Object LastWriteTime, Name, FullName | Format-Table -AutoSize",
-            path
+            &paths[0]
         ))
         .output()
         .expect("failed to execute process");
@@ -44,7 +44,7 @@ pub fn log(path  : &str){
        
         let json_data = serde_json::to_string(&archivos_info).expect("failed to convert in json");
 
-        let mut file = fs::File::create("log.json").expect("failed to create file");
+        let mut file = fs::File::create(format!("{}\\log.json", &paths[1])).expect("failed to create file");
         file.write_all(json_data.as_bytes()).expect("filed to write");
         
 
