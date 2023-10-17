@@ -1,15 +1,20 @@
 use std::fs;
 
-pub fn check_log(destination_path : &String) -> bool {
-    let mut first_time = true;
-    let destination = format!("{destination_path}\\log.json");
-    println!("{}",&destination);
-    if let Ok(metadata) = fs::metadata(&destination) {
-        if metadata.is_file() { 
-            first_time = false;
-        }
-    } else {
-        first_time = true;
+//// Checks if the file "log.json" exists in the specified location.
+///
+/// # Arguments
+///
+/// * `destination_path` - The destination path where the file will be searched.
+///
+/// # Returns
+///
+/// `true` if the file exists, `false` otherwise.
+pub fn check_log(destination_path: &str) -> bool {
+    let destination = format!("{}/log.json", destination_path);
+    println!("Ruta del archivo: {}", &destination);
+
+    match fs::metadata(&destination) {
+        Ok(metadata) => metadata.is_file(),
+        Err(_) => false,
     }
-    first_time
 }

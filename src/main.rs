@@ -17,7 +17,7 @@ fn main() {
     let exist = comands::check_log::check_log(&destination_path);
     comands::log::log(&paths); 
    
-    if exist {
+    if !exist {
         comands::copy_all::copy_all(&paths);
     } else {
         match &opt {

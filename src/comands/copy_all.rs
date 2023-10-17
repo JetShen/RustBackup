@@ -11,8 +11,9 @@ pub fn copy_all(paths : &Vec<String>){
         .expect("failed to copy");
 
     if copy.status.success() {
-        println!("copia realizada")
+        eprintln!("Copy all files")
     } else {
-        println!("Error al copiar {}" , copy.status)
+        eprintln!("Error"); 
+        // eprintln!("Error {}", copy.status);
     }
 }
